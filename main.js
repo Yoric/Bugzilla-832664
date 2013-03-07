@@ -11,7 +11,7 @@ worker.postMessage("");
 
 var deltas = [];
 
-for (i = 0; i < 10; ++i) {
+for (i = 0; i < 1; ++i) {
   window.setTimeout(function() {
     console.log("Sending object");
     var start = Date.now();
@@ -34,6 +34,11 @@ worker.addEventListener("message", function onmessage(e) {
     // Ignore message
     return;
   }
+  var eltMainThread = document.getElementById("mainthread");
+  eltMainThread.textContent = "Main thread serialization (ms): " + JSON.serialize(deltas);
+  var eltWorkerThread = document.getElementById("workerthread");
+  eltWorkerThread.textContent = "Worker thread serialization (ms): " + JSON.serialize(deltas);
+
   console.log("Serialization cost", "(main thread)", deltas);
   console.log("Serialization cost", "(worker thread)", data);
 });
