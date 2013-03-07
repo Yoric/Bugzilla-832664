@@ -1,6 +1,6 @@
+var deltas = [];
 self.addEventListener("message", function onmessage(e) {
   var data = e.data;
-  var deltas = [];
   if (data == "") {
     return;
   }
