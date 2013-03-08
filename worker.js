@@ -1,6 +1,7 @@
-var object = null;
-var deltas = [];
-
+var hugeObject = null;
+var deltaPostMessage = [];
+var deltaJSON = [];
+var config;
 var measureDuration = function measureDuration(f) {
   var start = Date.now();
   f();
@@ -10,19 +11,38 @@ var measureDuration = function measureDuration(f) {
 
 self.addEventListener("message", function onmessage(e) {
   var data = e.data;
-  if (data == "") {
+
+  if (typeof data == "object" && "config" in data) {
+    // Initialize worker
+    config = data.config;
+    var hugeObject = {};
+    var leaf = "";
+    for (var i = 0; i < config.bytes_in_leaf; ++i) {
+      leaf += "x";
+    }
+
+    for (i = 0; i < config.leaves_in_sample; ++i) {
+      hugeObject[":" + i] = leaf;
+    }
+
     return;
   }
-  if (data == "end") {
+
+  if (typeof data == "object" && "sample" in data) {
+    // Perform measure
     // Measure the duration of JSON serialization, for comparison
-    var serialize = measureDuration(function() {
-      JSON.stringify(object);
-    });
-    self.postMessage({deltas: deltas, serialize: serialize});
+    deltaJSON.push(measureDuration(function() {
+      JSON.stringify(hugeObject);
+    }));
+    // Measure how long it takes to postMessage object to main thread
+    deltaPostMessage.push(measureDuration(function() {
+      self.postMessage(hugeObject);
+    }));
     return;
   }
-  object = data;
-  deltas.push(measureDuration(function() {
-    self.postMessage(data);// Post message back to sender
-  }));
+
+  if (typeof data == "object" && "end" in data) {
+    self.postMessage({post: deltaPostMessage, json: deltaJSON});
+    return;
+  }
 });
