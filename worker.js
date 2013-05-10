@@ -15,7 +15,7 @@ self.addEventListener("message", function onmessage(e) {
   if (typeof data == "object" && "config" in data) {
     // Initialize worker
     config = data.config;
-    var hugeObject = {};
+    hugeObject = {};
     var leaf = "";
     for (var i = 0; i < config.bytes_in_leaf; ++i) {
       leaf += "x";
