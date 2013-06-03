@@ -80,7 +80,7 @@ var Tests = {
         // Work is still in progress
           eltWorkerThread.textContent = "Received " +
             (++receivedMessages) + "/" +
-            Shared.config.number_of_samples;
+          (Shared.config.number_of_samples + 1);
         return;
       }
       worker.removeEventListener("message", onmessage);
