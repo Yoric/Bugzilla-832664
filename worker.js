@@ -2,6 +2,7 @@ importScripts("shared.js");
 
 var hugeObject = null;
 var deltaJSON = [];
+
 var measureDuration = function measureDuration(f) {
   var start = Date.now();
   f();
@@ -14,7 +15,7 @@ self.addEventListener("message", function onmessage(e) {
 
   if (typeof data == "object" && "config" in data) {
     // Initialize worker
-    hugeObject = Shared.Sample.hugeObject;
+    hugeObject = Shared.config = data.config;
     return;
   }
 
