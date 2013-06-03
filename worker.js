@@ -15,6 +15,7 @@ self.addEventListener("message", function onmessage(e) {
   if (typeof data == "object" && "config" in data) {
     // Initialize worker
     Shared.config = data.config;
+    dump("Generated hugeObject" + JSON.stringify(Shared.Sample.hugeObject));
     return;
   }
 
@@ -23,7 +24,9 @@ self.addEventListener("message", function onmessage(e) {
     var deltaPostMessage = [];
     for (var i = 0; i < Shared.config.number_of_samples; ++i) {
       deltaPostMessage.push(measureDuration(function() {
-        self.postMessage(Shared.Sample.hugeObject);
+        var object = Shared.Sample.makeHugeObject();
+        object.id = i;
+        self.postMessage(object);
       }));
     }
     self.postMessage({durationPost: deltaPostMessage});

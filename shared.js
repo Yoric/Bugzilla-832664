@@ -65,6 +65,9 @@ var Shared = {
       if (Shared.Sample._hugeObject) {
         return Shared.Sample._hugeObject;
       }
+      return Shared.Sample._hugeObject = Shared.Sample.makeHugeObject();
+    },
+    makeHugeObject: function() {
       var hugeObject = {};
       var leaf = "";
       for (var i = 0; i < Shared.config.bytes_in_leaf; ++i) {
@@ -74,7 +77,7 @@ var Shared = {
       for (i = 0; i < Shared.config.leaves_in_sample; ++i) {
         hugeObject[":" + i] = leaf;
       }
-      return Shared.Sample._hugeObject = hugeObject;
+      return hugeObject;
     }
   }
 };

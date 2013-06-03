@@ -81,6 +81,7 @@ var Tests = {
           eltWorkerThread.textContent = "Received " +
             (++receivedMessages) + "/" +
           (Shared.config.number_of_samples + 1);
+        console.log("Received message", receivedMessages, data);
         return;
       }
       worker.removeEventListener("message", onmessage);
