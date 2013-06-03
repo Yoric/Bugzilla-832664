@@ -1,6 +1,5 @@
 importScripts("shared.js");
 
-var hugeObject = null;
 var deltaJSON = [];
 
 var measureDuration = function measureDuration(f) {
@@ -15,7 +14,7 @@ self.addEventListener("message", function onmessage(e) {
 
   if (typeof data == "object" && "config" in data) {
     // Initialize worker
-    hugeObject = Shared.config = data.config;
+    Shared.config = data.config;
     return;
   }
 
@@ -24,7 +23,7 @@ self.addEventListener("message", function onmessage(e) {
     var deltaPostMessage = [];
     for (var i = 0; i < Shared.config.number_of_samples; ++i) {
       deltaPostMessage.push(measureDuration(function() {
-        self.postMessage(hugeObject);
+        self.postMessage(Shared.Sample.hugeObject);
       }));
     }
     self.postMessage({durationPost: deltaPostMessage});
