@@ -12,11 +12,17 @@ if (window.location.search.length > 1) {
       if (arg.startsWith("test=")) {
         gTests = [arg.substr("test=".length)];
       } else if (arg.startsWith("repeat=")) {
+        console.log("repeat=", arg);
         Shared.config.number_of_samples = parseInt(arg.substr("repeat=".length));
+        console.log(Shared.config.number_of_samples);
       } else if (arg.startsWith("leaves=")) {
+        console.log("leaves=", arg);
         Shared.config.leaves_in_sample = parseInt(arg.substr("leaves=".length));
+        console.log(Shared.config.leaves_in_samples);
       } else if (arg.startsWith("bytes=")) {
+        console.log("bytes=", arg);
         Shared.config.bytes_in_leaf = parseInt(arg.substr("bytes=".length));
+        console.log(Shared.config.bytes_in_leaf);
       }
     }
   })();
@@ -28,7 +34,9 @@ var eltMainThread = document.getElementById("serialize_mainthread");
 var eltWorkerThread = document.getElementById("serialize_workerthread");
 var eltJSON = document.getElementById("serialize_json");
 
-eltJSON.textContent = "Testing " + Shared.config.number_of_samples + " runs with an object of " + Shared.config.leaves_in_sample + " leaves and " + Shared.config.bytes_in_leaf + " bytes per leave";
+window.setTimeout(function() {
+  eltJSON.textContent = "Testing " + Shared.config.number_of_samples + " runs with an object of " + Shared.config.leaves_in_sample + " leaves and " + Shared.config.bytes_in_leaf + " bytes per leave";
+}, 500);
 
 var Tests = {
   // Test the duration of sending an object
