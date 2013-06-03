@@ -11,6 +11,12 @@ if (window.location.search.length > 1) {
       var arg = args[i];
       if (arg.startsWith("test=")) {
         gTests = [arg.substr("test=".length)];
+      } else if (arg.startsWith("repeat=")) {
+        Shared.config.number_of_samples = parseInt(arg.substr("repeat=".length));
+      } else if (arg.startsWith("leaves=")) {
+        Shared.config.leaves_in_sample = parseInt(arg.substr("leaves=".length));
+      } else if (arg.startsWith("bytes=")) {
+        Shared.config.bytes_in_leaf = parseInt(arg.substr("bytes=".length));
       }
     }
   })();
