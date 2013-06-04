@@ -22,11 +22,9 @@ self.addEventListener("message", function onmessage(e) {
   if (data.start == "receiveObject") {
     // Measure how long it takes to postMessage object to main thread
     var deltaPostMessage = [];
-    for (var i = 0; i < Shared.config.number_of_samples; ++i) {
+    for (var i = 0; i < Shared.config.samples; ++i) {
       deltaPostMessage.push(measureDuration(function() {
-        var object = Shared.Sample.makeHugeObject();
-        object.id = i;
-        self.postMessage(object);
+        self.postMessage(Shared.Sample.hugeObject);
       }));
     }
     self.postMessage({durationPost: deltaPostMessage});
