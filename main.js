@@ -12,17 +12,13 @@ if (window.location.search.length > 1) {
       if (arg.startsWith("test=")) {
         gTests = [arg.substr("test=".length)];
       } else if (arg.startsWith("repeat=")) {
-        console.log("repeat=", arg);
-        Shared.config.number_of_samples = parseInt(arg.substr("repeat=".length));
-        console.log(Shared.config.number_of_samples);
-      } else if (arg.startsWith("leaves=")) {
-        console.log("leaves=", arg);
-        Shared.config.leaves_in_sample = parseInt(arg.substr("leaves=".length));
-        console.log(Shared.config.leaves_in_samples);
-      } else if (arg.startsWith("bytes=")) {
-        console.log("bytes=", arg);
-        Shared.config.bytes_in_leaf = parseInt(arg.substr("bytes=".length));
-        console.log(Shared.config.bytes_in_leaf);
+        Shared.config.samples = parseInt(arg.substr("repeat=".length));
+      } else if (arg.startsWith("tabs=")) {
+        Shared.config.tabs = parseInt(arg.substr("tabs=".length));
+      } else if (arg.startsWith("entries=")) {
+        Shared.config.entries = parseInt(arg.substr("entries=".length));
+      } else if (arg.startsWith("children=")) {
+        Shared.config.children = parseInt(arg.substr("children=".length));
       }
     }
   })();
@@ -35,14 +31,14 @@ var eltWorkerThread = document.getElementById("serialize_workerthread");
 var eltJSON = document.getElementById("serialize_json");
 
 window.setTimeout(function() {
-  eltJSON.textContent = "Testing " + Shared.config.number_of_samples + " runs with an object of " + Shared.config.leaves_in_sample + " leaves and " + Shared.config.bytes_in_leaf + " bytes per leave";
+  eltJSON.textContent = "Repeat " + Shared.config.samples + " runs with a session of " + Shared.config.tabs + " tabs, " + Shared.config.children + " iframes per tab  and " + Shared.config.entries + " history entries per tab/iframe";
 }, 500);
 
 var Tests = {
   // Test the duration of sending an object
   sendObject: function sendObject(worker, object) {
     var deltas = [];
-    for (var i = 0; i < Shared.config.number_of_samples; ++i) {
+    for (var i = 0; i < Shared.config.samples; ++i) {
       var scope = (function(i) {
         window.setTimeout(function() {
           console.log("Sending huge object");
@@ -51,7 +47,7 @@ var Tests = {
           var end = Date.now();
           deltas.push(end - start);
           console.log("Huge object sent", end - start, "ms");
-          eltMainThread.textContent = "Sent " + ( i + 1 ) + "/" + Shared.config.number_of_samples;
+          eltMainThread.textContent = "Sent " + ( i + 1 ) + "/" + Shared.config.samples;
         });
       })(i);
     }
@@ -80,7 +76,7 @@ var Tests = {
         // Work is still in progress
           eltWorkerThread.textContent = "Received " +
             (++receivedMessages) + "/" +
-          (Shared.config.number_of_samples + 1);
+          (Shared.config.samples + 1);
         console.log("Received message", receivedMessages, data);
         return;
       }
