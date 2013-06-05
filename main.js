@@ -48,7 +48,7 @@ var Tests = {
           deltas.push(end - start);
           console.log("Huge object sent", end - start, "ms");
           eltMainThread.textContent = "Sent " + ( i + 1 ) + "/" + Shared.config.samples;
-        });
+        }, 100);
       })(i);
     }
     window.setTimeout(function() {

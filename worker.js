@@ -15,7 +15,6 @@ self.addEventListener("message", function onmessage(e) {
   if (typeof data == "object" && "config" in data) {
     // Initialize worker
     Shared.config = data.config;
-    dump("Generated hugeObject" + JSON.stringify(Shared.Sample.hugeObject));
     return;
   }
 
